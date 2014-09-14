@@ -231,12 +231,16 @@ bool CRedLock::LockInstance(redisContext *c, const char *resource,
     redisReply *reply;
     reply = (redisReply *)redisCommand(c, "set %s %s px %d nx",
                                        resource, val, ttl);
-    printf("Set return: %s [null == fail, OK == success]\n", reply->str);
-    if (reply->str && strcmp(reply->str, "OK") == 0) {
+    if (reply) {
+        printf("Set return: %s [null == fail, OK == success]\n", reply->str);
+    }
+    if (reply && reply->str && strcmp(reply->str, "OK") == 0) {
         freeReplyObject(reply);
         return true;
     }
-    freeReplyObject(reply);
+    if (reply) {
+        freeReplyObject(reply);
+    }
     return false;
 }
 
@@ -257,12 +261,16 @@ bool CRedLock::ContinueLockInstance(redisContext *c, const char *resource,
                                       sdsTTL};
     redisReply *reply = RedisCommandArgv(c, argc, continueLockScriptArgv);
     sdsfree(sdsTTL);
-    printf("Set return: %s [null == fail, OK == success]\n", reply->str);
-    if (reply->str && strcmp(reply->str, "OK") == 0) {
+    if (reply) {
+        printf("Set return: %s [null == fail, OK == success]\n", reply->str);
+    }
+    if (reply && reply->str && strcmp(reply->str, "OK") == 0) {
         freeReplyObject(reply);
         return true;
     }
-    freeReplyObject(reply);
+    if (reply) {
+        freeReplyObject(reply);
+    }
     return false;
 }
 
@@ -278,7 +286,9 @@ void CRedLock::UnlockInstance(redisContext *c, const char *resource,
                                 (char*)resource,
                                 (char*)val};
     redisReply *reply = RedisCommandArgv(c, argc, unlockScriptArgv);
-    freeReplyObject(reply);
+    if (reply) {
+        freeReplyObject(reply);
+    }
 }
 
 // ----------------
@@ -294,7 +304,9 @@ redisReply * CRedLock::RedisCommandArgv(redisContext *c, int argc, char **inargv
         argvlen[j] = sdslen(argv[j]);
     redisReply *reply = NULL;
     reply = (redisReply *)redisCommandArgv(c, argc, (const char **)argv, argvlen);
-    printf("RedisCommandArgv return: %lld\n", reply->integer);
+    if (reply) {
+        printf("RedisCommandArgv return: %lld\n", reply->integer);
+    }
     free(argvlen);
     sdsfreesplitres(argv, argc);
     return reply;
