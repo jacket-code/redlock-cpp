@@ -20,6 +20,7 @@ To acquire a lock:
     CLock my_lock;
     bool flag = dlm->Lock("my_resource_name", 1000, my_lock);
 or(will alway hold the lock until release it):
+
     CLock my_lock;
     bool flag = dlm->ContinueLock("my_resource_name", 1000, my_lock);
 
@@ -27,12 +28,12 @@ Where the resource name is an unique identifier of what you are trying to lock a
 
 The returned value is false if the lock was not acquired (you may try again), otherwise an class representing the lock is returned, having three keys:
 
-class CLock {
-public:
-    int m_validityTime; => 9897.3020019531 // 当前锁可以存活的时间, 毫秒
-    sds m_resource; => my_resource_name // 要锁住的资源名称
-    sds m_val; => 53771bfa1e775 // 锁住资源的进程随机名字
-};
+    class CLock {
+    public:
+        int m_validityTime; => 9897.3020019531 // 当前锁可以存活的时间, 毫秒
+        sds m_resource; => my_resource_name // 要锁住的资源名称
+        sds m_val; => 53771bfa1e775 // 锁住资源的进程随机名字
+    };
 
 validity, an integer representing the number of milliseconds the lock will be valid.
 resource, the name of the locked resource as specified by the user.
