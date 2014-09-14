@@ -1,92 +1,122 @@
-<!doctype html>
-<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
-<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
 
-  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen">
-  <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
 
-  <title>Redlock-cpp</title>
-  <meta name="description" content="C++实现redis分布式锁">
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Redlock-cpp by jacket-code</title>
+  </head>
 
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <body>
+    <a id="forkme_banner" href="https://github.com/jacket-code/redlock-cpp">View on GitHub</a>
+    <div class="shell">
 
-</head>
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Redlock-cpp</h1>
+            <h2>C++实现redis分布式锁</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
 
-<body>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/jacket-code/redlock-cpp/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/jacket-code/redlock-cpp/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
 
-  <div class="wrapper">
-    <header>
-      <h1 class="title">Redlock-cpp</h1>
-    </header>
-    <div id="container">
-      <p class="tagline">C++实现redis分布式锁</p>
-      <div id="main" role="main">
-        <div class="download-bar">
-        <div class="inner">
-          <a href="https://github.com/jacket-code/redlock-cpp/tarball/master" class="download-button tar"><span>Download</span></a>
-          <a href="https://github.com/jacket-code/redlock-cpp/zipball/master" class="download-button zip"><span>Download</span></a>
-          <a href="https://github.com/jacket-code/redlock-cpp" class="code">View Redlock-cpp on GitHub</a>
-        </div>
-        <span class="blc"></span><span class="trc"></span>
-        </div>
-        <article class="markdown-body">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+      <span class="banner-fix"></span>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+
+      <section id="main_content">
+        <h1>
+<a name="redlock-cpp" class="anchor" href="#redlock-cpp"><span class="octicon octicon-link"></span></a>redlock-cpp</h1>
+
+<p>C++实现redis分布式锁
+redlock-cpp - Redis distributed locks in C++</p>
+
+<p>Based on Redlock-rb by Salvatore Sanfilippo</p>
+
+<p>This library implements the Redis-based distributed lock manager algorithm described in this blog post.</p>
+
+<p>To create a lock manager:</p>
+
+<pre><code>CRedLock * dlm = new CRedLock();
+dlm-&gt;AddServerUrl("127.0.0.1", 5005);
+dlm-&gt;AddServerUrl("127.0.0.1", 5006);
+dlm-&gt;AddServerUrl("127.0.0.1", 5007);
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>To acquire a lock:</p>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<pre><code>CLock my_lock;
+bool flag = dlm-&gt;Lock("my_resource_name", 1000, my_lock);
+</code></pre>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>or(will alway hold the lock until release it):</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<pre><code>CLock my_lock;
+bool flag = dlm-&gt;ContinueLock("my_resource_name", 1000, my_lock);
+</code></pre>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Where the resource name is an unique identifier of what you are trying to lock and 1000 is the number of milliseconds for the validity time.</p>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<p>The returned value is false if the lock was not acquired (you may try again), otherwise an class representing the lock is returned, having three keys:</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<pre><code>class CLock {
+public:
+    int m_validityTime; =&gt; 9897.3020019531 // 当前锁可以存活的时间, 毫秒
+    sds m_resource; =&gt; my_resource_name // 要锁住的资源名称
+    sds m_val; =&gt; 53771bfa1e775 // 锁住资源的进程随机名字
+};
+</code></pre>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<p>validity, an integer representing the number of milliseconds the lock will be valid.
+resource, the name of the locked resource as specified by the user.
+token, a random token value which is used to safe reclaim the lock.
+To release a lock:</p>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </article>
-      </div>
+<pre><code>dlm-&gt;Unlock(my_lock);
+</code></pre>
+
+<p>It is possible to setup the number of retries (by default 3) and the retry delay (by default 200 milliseconds) used to acquire the lock.</p>
+
+<p>The retry delay is actually chosen at random between $retryDelay / 2 milliseconds and the specified $retryDelay value.</p>
+
+<p>Disclaimer: As stated in the original antirez's version, this code implements an algorithm which is currently a proposal, it was not formally analyzed. Make sure to understand how it works before using it in your production environments.</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/jacket-code">jacket-code</a> can be found on <a href="https://github.com/jacket-code/redlock-cpp">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
     </div>
-    <footer>
-      <div class="owner">
-      <p><a href="https://github.com/jacket-code" class="avatar"><img src="https://avatars1.githubusercontent.com/u/2426679?v=2&amp;s=60" width="48" height="48"></a> <a href="https://github.com/jacket-code">jacket-code</a> maintains <a href="https://github.com/jacket-code/redlock-cpp">Redlock-cpp</a></p>
 
-
-      </div>
-      <div class="creds">
-        <small>This page generated using <a href="http://pages.github.com/">GitHub Pages</a><br>theme by <a href="https://twitter.com/jonrohan/">Jon Rohan</a></small>
-      </div>
-    </footer>
-  </div>
-  <div class="current-section">
-    <a href="#top">Scroll to top</a>
-    <a href="https://github.com/jacket-code/redlock-cpp/tarball/master" class="tar">tar</a><a href="https://github.com/jacket-code/redlock-cpp/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
-    <p class="name"></p>
-  </div>
-
-  
-</body>
+    
+  </body>
 </html>
