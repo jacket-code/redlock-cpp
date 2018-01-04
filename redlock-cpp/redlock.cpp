@@ -103,9 +103,9 @@ bool CRedLock::Initialize() {
 // add redis server
 // ----------------
 bool CRedLock::AddServerUrl(const char *ip, const int port) {
-    redisContext *c;
+    redisContext *c = NULL;
     struct timeval timeout = { 1, 500000 }; // 1.5 seconds
-    c = redisConnectWithTimeout(ip, port, timeout);
+    c = redisConnectWithTimeout(ip, port, timeout);	
     if (c) {
         m_redisServer.push_back(c);
     }
