@@ -1045,7 +1045,14 @@ redisContext *redisConnectWithTimeout(const char *ip, int port, const struct tim
         return NULL;
 
     c->flags |= REDIS_BLOCK;
-    redisContextConnectTcp(c,ip,port,&tv);
+	
+    int r = redisContextConnectTcp(c,ip,port,&tv);
+	if(REDIS_ERR == r){		
+		if(c){
+			free(c) ;
+			c = NULL ;
+		}
+	}
     return c;
 }
 
